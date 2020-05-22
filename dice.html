@@ -1,0 +1,67 @@
+
+<html>
+
+<style>
+input {text-align: center; min-width: 250px;}
+</style>
+
+<script>
+
+function sfc32(a, b, c, d) {
+    return function() {
+      a >>>= 0; b >>>= 0; c >>>= 0; d >>>= 0; 
+      var t = (a + b) | 0;
+      a = b ^ b >>> 9;
+      b = c + (c << 3) | 0;
+      c = (c << 21 | c >>> 11);
+      d = d + 1 | 0;
+      t = t + d | 0;
+      c = c + t | 0;
+      return (t >>> 0) / 4294967296;
+    }
+}
+
+var facets = [
+  "A", 
+  "B",
+  "C",
+];
+
+
+const urlParams = new URLSearchParams(window.location.search);
+const [a, b, c, d] = urlParams.get('seed').split(",");
+var rand = sfc32(a, b, c, d);
+
+function roll() {
+  var x = rand();
+  return Math.floor(x * 4294967296) % facets.length;
+}
+
+var counter = 1;
+
+function rollAndshow() {
+  var r = roll();
+  document.getElementById("counter").value = counter++;
+  document.getElementById("result").value = facets[r];
+}
+
+function init() {
+  document.getElementById("control-number").value = roll() 
+    + " " + roll() 
+    + " " + roll()
+    + " " + roll()
+    + " " + roll() 
+    + " " + roll();
+}
+
+</script>
+
+<body onLoad="init();">
+<table>
+  <tr><td>Control number:&nbsp;&nbsp;</td><td><input id="control-number" disabled /></td></tr>
+  <tr><td colspan="2"><button style="width: 100%" onclick="rollAndshow();">Roll</button></td></tr>
+  <tr><td>Counter&nbsp;&nbsp;</td><td><input id="counter" disabled /></td></tr>
+  <tr><td>Result:&nbsp;&nbsp;</td><td><input id="result" disabled /></td></tr>
+</table>
+<body>
+</html>
