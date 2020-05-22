@@ -1,8 +1,9 @@
-
 <html>
 
 <style>
 input {text-align: center; min-width: 250px;}
+textarea {min-width: 250px; min-height: 100px;}
+table tr td {vertical-align: top;}
 </style>
 
 <script>
@@ -21,15 +22,12 @@ function sfc32(a, b, c, d) {
     }
 }
 
-var facets = [
-  "A", 
-  "B",
-  "C",
-];
-
-
 const urlParams = new URLSearchParams(window.location.search);
-const [a, b, c, d] = urlParams.get('seed').split(",");
+
+var facets = atob(urlParams.get("options")).split("\n");
+console.log(facets);
+
+const [a, b, c, d] = urlParams.get("seed").split(",");
 var rand = sfc32(a, b, c, d);
 
 function roll() {
@@ -53,6 +51,7 @@ function init() {
     + " " + roll() 
     + " " + roll();
 }
+
 
 </script>
 
